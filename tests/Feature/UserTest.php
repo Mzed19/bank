@@ -2,9 +2,6 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
-
-use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -40,5 +37,62 @@ class UserTest extends TestCase
             'The document has already been taken.',
             $response->getContent()
         );
+    }
+
+    public function testUpdateUserPassword(): void
+    {
+        $response = $this->post('/api/user', [
+            'document' => '48306792041',
+            'password' => 'password123',
+            'balance' => 1000.00
+        ]);
+
+        $userCreated = json_decode($response->getContent());
+
+        $updateResponse = $this->put('/api/user/'.$userCreated->id, [
+            'password' => 'password123',
+        ]);
+
+        $updateResponse->assertOk();
+    }
+
+    public function testDisableUser(): void
+    {
+       $response = $this->post('/api/user', [
+            'document' => '48306792041',
+            'password' => 'password123',
+            'balance' => 1000.00
+        ]);
+
+        $userCreated = json_decode($response->getContent());
+
+        $updateResponse = $this->put('/api/user/'.$userCreated->id, [
+            'is_active' => false
+        ]);
+
+        $updateResponse->assertOk();
+    }
+
+    public function testListAllUsers(): void
+    {
+        $this->post('/api/user', [
+            'document' => '48306792041',
+            'password' => 'password123',
+            'balance' => 1000.00
+        ]);
+
+        $this->post('/api/user', [
+            'document' => '83684171042',
+            'password' => 'password123',
+            'balance' => 500.00
+        ]);
+
+        $response = $this->get('/api/user', $this->headers);
+
+        $response->assertOk();
+
+        $users = json_decode($response->getContent());
+
+        $this->assertCount(2, $users);
     }
 }
