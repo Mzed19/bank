@@ -2,18 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserStoreRequest;
-use App\Http\Requests\UserUpdateRequest;
+use App\Http\Resources\LoginResource;
 use App\Http\Resources\UserResource;
 use App\Models\Deposit;
-use App\Models\Transaction;
 use App\Models\User;
+use App\Services\Login\LoginService;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
+    public function login(LoginRequest $request): JsonResponse
+    {
+        try{
+            $authentication = (new LoginService)->execute(
+                document: $request->input('document'),
+                password: $request->input('password')
+            );
+
+            return $this->sendContent(
+                content: LoginResource::make($authentication),
+                code: Response::HTTP_OK
+            );
+        }catch(Exception $e){
+            return $this->treatException($e);
+        }
+    }
+
     public function create(UserStoreRequest $request): JsonResponse
     {
         try{
@@ -32,10 +52,7 @@ class UserController extends Controller
                 code: Response::HTTP_CREATED
             );
         }catch(Exception $e){
-            return $this->sendContent(
-                content: $e->getMessage(),
-                code: Response::HTTP_BAD_REQUEST
-            );
+            return $this->treatException($e);
         }
     }
 

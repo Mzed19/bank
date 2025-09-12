@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TransferTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +17,7 @@ return new class extends Migration
             $table->foreignId('sender_id')->constrained('users');
             $table->foreignId('receiver_id')->constrained('users');
             $table->decimal('amount', 15, 2);
-            $table->string('type');
+            $table->enum('type', [TransferTypeEnum::getValuesInString()])->comment(TransferTypeEnum::getValuesInString());
             $table->text('description')->nullable();
             $table->timestamps();
         });

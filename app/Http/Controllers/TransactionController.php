@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TransferTypeEnum;
 use App\Http\Requests\DepositStoreRequest;
 use App\Http\Requests\TransferStoreRequest;
 use App\Http\Resources\DepositResource;
 use App\Http\Resources\TransferResource;
 use App\Models\Deposit;
-use App\Services\TransactionService;
+use App\Services\Transaction\TransactionService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class TransactionController extends Controller
 {
@@ -42,7 +42,8 @@ class TransactionController extends Controller
 
             (new TransactionService)->createTransfer(
                 amount: $data['amount'],
-                userId: $data['userId'],
+                receiverId: $data['receiverId'],
+                type: TransferTypeEnum::from($data['type']),
                 description: $data['description'] ?? null
             );
 

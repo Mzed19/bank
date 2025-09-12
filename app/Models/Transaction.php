@@ -11,4 +11,9 @@ class Transaction extends Model
         'amount',
         'type'
     ];
+
+    public function getUserBalance(int $userId): float
+    {
+        return self::where('user_id', $userId)->sum('amount');
+    }
 }

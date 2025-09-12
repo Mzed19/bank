@@ -21,8 +21,8 @@ abstract class Controller
 
     public function treatException(Exception $exception): JsonResponse
     {
-        return match($exception) {
-            UnprocessableEntityHttpException::class => $this->sendError(
+        return match(get_class($exception)) {
+            'Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException' => $this->sendError(
                 message: $exception->getMessage(),
                 code: Response::HTTP_UNPROCESSABLE_ENTITY
             ),
