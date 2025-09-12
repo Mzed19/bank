@@ -9,6 +9,6 @@ Enum TransactionTypeEnum: string
 
     public static function getValuesInString(): string
     {
-        return implode(', ', array_map(fn($case) => $case->value, self::cases()));
+        return implode(',', array_map(fn($case) => $case->value, self::cases()));
     }
 }

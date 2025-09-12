@@ -12,7 +12,7 @@ class UserFactory extends Factory
     {
         return [
             'document' => PersonDocumentHelper::generateRandomValidDocument(),
-            'password' => Hash::make('password'),
+            'password' => 'password',
         ];
     }
 }

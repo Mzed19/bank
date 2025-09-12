@@ -12,12 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transfer', function (Blueprint $table) {
+        Schema::create('transfers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sender_id')->constrained('users');
             $table->foreignId('receiver_id')->constrained('users');
             $table->decimal('amount', 15, 2);
-            $table->enum('type', [TransferTypeEnum::getValuesInString()])->comment(TransferTypeEnum::getValuesInString());
+            $table->enum('type', explode(",", TransferTypeEnum::getValuesInString()))
+                ->comment(TransferTypeEnum::getValuesInString());
             $table->text('description')->nullable();
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transfer');
+        Schema::dropIfExists('transfers');
     }
 };

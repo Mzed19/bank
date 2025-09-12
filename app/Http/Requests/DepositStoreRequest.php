@@ -9,7 +9,7 @@ class DepositStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userId' => 'required|exists:users,id',
+            'receiverId' => 'required|exists:users,id',
             'amount' => 'required|numeric|min:0.01',
             'description' => 'nullable|string|max:255'
         ];

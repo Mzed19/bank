@@ -17,7 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->decimal('amount', 15, 2);
-            $table->enum('type', [TransactionTypeEnum::getValuesInString()])->comment(TransactionTypeEnum::getValuesInString());
+            $table->enum('type', explode(",", TransactionTypeEnum::getValuesInString()))
+                ->comment(TransactionTypeEnum::getValuesInString());
+            $table->bigInteger('imported_id');
             $table->timestamps();
         });
     }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionService extends Validations
 {
-    public function createTransfer(float $amount, int $receiverId, TransferTypeEnum $type, ?string $description): Transfer
+    public function transfer(float $amount, int $receiverId, TransferTypeEnum $type, ?string $description): Transfer
     {
         $this->validateTransfer(amount: $amount, receiverId: $receiverId);
 

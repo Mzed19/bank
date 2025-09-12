@@ -9,10 +9,11 @@ class Transaction extends Model
     protected $fillable = [
         'user_id',
         'amount',
-        'type'
+        'type',
+        'imported_id'
     ];
 
-    public function getUserBalance(int $userId): float
+    public static function getUserBalance(int $userId): float
     {
         return self::where('user_id', $userId)->sum('amount');
     }

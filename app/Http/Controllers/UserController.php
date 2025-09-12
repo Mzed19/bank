@@ -11,9 +11,7 @@ use App\Models\User;
 use App\Services\Login\LoginService;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
@@ -42,7 +40,7 @@ class UserController extends Controller
             $userCreated = User::create($data);
 
             Deposit::create([
-                'user_id' => $userCreated->id,
+                'receiver_id' => $userCreated->id,
                 'amount' => $data['balance'],
                 'description' => 'Depósito inicial'
             ]);

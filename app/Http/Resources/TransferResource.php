@@ -14,6 +14,11 @@ class TransferResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'senderId' => $this->sender_id,
+            'receiverId' => $this->receiver_id,
+            'amount' => $this->amount
+        ];
     }
 }
