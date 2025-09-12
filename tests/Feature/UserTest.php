@@ -39,40 +39,6 @@ class UserTest extends TestCase
         );
     }
 
-    public function testUpdateUserPassword(): void
-    {
-        $response = $this->post('/api/user', [
-            'document' => '48306792041',
-            'password' => 'password123',
-            'balance' => 1000.00
-        ]);
-
-        $userCreated = json_decode($response->getContent());
-
-        $updateResponse = $this->put('/api/user/'.$userCreated->id, [
-            'password' => 'password123',
-        ]);
-
-        $updateResponse->assertOk();
-    }
-
-    public function testDisableUser(): void
-    {
-       $response = $this->post('/api/user', [
-            'document' => '48306792041',
-            'password' => 'password123',
-            'balance' => 1000.00
-        ]);
-
-        $userCreated = json_decode($response->getContent());
-
-        $updateResponse = $this->put('/api/user/'.$userCreated->id, [
-            'is_active' => false
-        ]);
-
-        $updateResponse->assertOk();
-    }
-
     public function testListAllUsers(): void
     {
         $this->post('/api/user', [

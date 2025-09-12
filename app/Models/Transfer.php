@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class Transfer extends Model
 {
     protected $fillable = [
-        'user_id',
+        'sender_id',
+        'receiver_id',
         'amount',
-        'type'
+        'type',
+        'description',
     ];
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Deposit;
 use App\Models\Transaction;
@@ -26,12 +27,12 @@ class UserController extends Controller
                 'description' => 'Depósito inicial'
             ]);
 
-            return $this->sendContentAndCode(
+            return $this->sendContent(
                 content: UserResource::make($userCreated),
                 code: Response::HTTP_CREATED
             );
         }catch(Exception $e){
-            return $this->sendContentAndCode(
+            return $this->sendContent(
                 content: $e->getMessage(),
                 code: Response::HTTP_BAD_REQUEST
             );
@@ -42,7 +43,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return $this->sendContentAndCode(
+        return $this->sendContent(
             content: UserResource::collection($users),
             code: $users->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK
         );
