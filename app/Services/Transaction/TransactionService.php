@@ -6,7 +6,7 @@ use App\Enums\TransferTypeEnum;
 use App\Models\Transfer;
 use Illuminate\Support\Facades\Auth;
 
-class TransactionService extends Validations
+class TransactionService extends TransactionValidations
 {
     public function transfer(float $amount, int $receiverId, TransferTypeEnum $type, ?string $description): Transfer
     {

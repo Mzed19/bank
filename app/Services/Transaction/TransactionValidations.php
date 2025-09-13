@@ -2,11 +2,12 @@
 
 namespace App\Services\Transaction;
 
+use App\Helpers\TransactionHelper;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-class Validations
+class TransactionValidations
 {
     public function validateTransfer(float $amount, int $receiverId): void
     {
@@ -23,8 +24,14 @@ class Validations
 
     private function blockUnavailableAmount(float $amount): void
     {
-        if ($amount > Transaction::getUserBalance(userId: Auth::User()->id)) {
-            throw new UnprocessableEntityHttpException('Saldo insuficiente para realizar a transferência.');
+        $userBalance = Transaction::getUserBalance(userId: Auth::User()->id);
+
+        if ($amount > $userBalance) {
+            $userBalanceInCurrencyFormat = TransactionHelper::toCurrency($userBalance);
+
+            throw new UnprocessableEntityHttpException(
+                "Saldo insuficiente para realizar a transferência. Seu saldo disponível é $userBalanceInCurrencyFormat"
+            );
         }
     }
 }
