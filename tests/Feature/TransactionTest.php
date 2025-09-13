@@ -44,7 +44,6 @@ class TransactionTest extends TestCase
 
     public function testSuccessTransferCreation(): void
     {
-
         $response = $this->post('/api/transaction/transfer', [
             'receiverId' => 2,
             'amount' => 1000.00,
@@ -52,5 +51,37 @@ class TransactionTest extends TestCase
         ], $this->headers);
 
         $response->assertCreated();
+    }
+
+    public function testFailByAutoTransfer(): void
+    {
+        $response = $this->post('/api/transaction/transfer', [
+            'receiverId' => 1,
+            'amount' => 10.00,
+            'type' => TransferTypeEnum::DEBIT->value
+        ], $this->headers);
+
+        $response->assertUnprocessable();
+
+        $this->assertEquals(
+            'Transferências para o próprio usuário não são permitidas.',
+            $response->json('error')
+        );
+    }
+
+    public function testFailByUnavailableAmount(): void
+    {
+        $response = $this->post('/api/transaction/transfer', [
+            'receiverId' => 2,
+            'amount' => 9999999999999.00,
+            'type' => TransferTypeEnum::DEBIT->value
+        ], $this->headers);
+
+        $response->assertUnprocessable();
+
+        $this->assertStringContainsString(
+            'Saldo insuficiente para realizar a transferência. Seu saldo disponível é ',
+            $response->json('error')
+        );
     }
 }
