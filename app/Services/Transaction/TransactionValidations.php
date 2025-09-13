@@ -24,7 +24,7 @@ class TransactionValidations
 
     private function blockUnavailableAmount(float $amount): void
     {
-        $userBalance = Transaction::getUserBalance(userId: Auth::User()->id);
+        $userBalance = Transaction::getAccountBalance(accountId: Auth::User()->id);
 
         if ($amount > $userBalance) {
             $userBalanceInCurrencyFormat = TransactionHelper::toCurrency($userBalance);

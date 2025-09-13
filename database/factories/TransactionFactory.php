@@ -22,7 +22,7 @@ class TransactionFactory extends Factory
         $type = $randomBoolean ? TransactionTypeEnum::DEPOSIT : TransactionTypeEnum::TRANSFER;
 
         return [
-            'user_id' => 1,
+            'account_id' => 1,
             'amount' => $this->faker->randomFloat(),
             'type' => $type->value,
             'imported_id' => 1

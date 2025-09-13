@@ -4,31 +4,31 @@ namespace Tests\Feature;
 
 use App\Enums\TransferTypeEnum;
 use App\Models\Deposit;
-use App\Models\User;
+use App\Models\Account;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class TransactionTest extends TestCase
 {
-    private Collection $users;
-    private string $firstUserToken;
+    private Collection $accounts;
+    private string $firstAccountToken;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->users = User::factory()->count(2)->has(Deposit::factory()->count(10))->create();
+        $this->accounts = Account::factory()->count(2)->has(Deposit::factory()->count(10))->create();
         $this->headers = array_merge($this->headers, ['Authorization: Bearer: ' => $this->getToken()]);
     }
 
     private function getToken(): void
     {
         $response = $this->post('/api/login', [
-            'document' => $this->users->first()['document'],
+            'document' => $this->accounts->first()['document'],
             'password' => 'password'
         ], $this->headers);
 
-        $this->firstUserToken = $response->json('token');
+        $this->firstAccountToken = $response->json('token');
     }
 
     public function testSuccessDepositCreation(): void

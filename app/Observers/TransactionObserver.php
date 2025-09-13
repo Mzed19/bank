@@ -16,24 +16,24 @@ class TransactionObserver
     {
         try {
             Transaction::create([
-                'user_id' => $record->receiver_id,
+                'account_id' => $record->receiver_account_id,
                 'amount' => $record->amount,
                 'type' => Str::of($record->getTable())->singular()->value(),
                 'imported_id' => $record->id
             ]);
         } catch (Exception $exception) {
+            Log::critical("Não foi possível creditar um valor de $record->amount para o usuário $record->receiver_account_id");
+            Log::critical($exception->getMessage());
             $this->revertTransaction(
                 tableName: $record->getTable,
                 recordId: $record->id
             );
-            Log::critical("Não foi possível creditar um valor de $record->amount para o usuário $record->receiver_id");
-            Log::critical($exception->getMessage());
         }
 
         if (!is_null($record->sender_id)) {
             try {
                 Transaction::create([
-                    'user_id' => $record->sender_id,
+                    'account_id' => $record->sender_id,
                     'amount' => -$record->amount,
                     'type' => Str::of($record->getTable())->singular()->value(),
                     'imported_id' => $record->id

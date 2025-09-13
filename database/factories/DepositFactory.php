@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -13,7 +14,7 @@ class DepositFactory extends Factory
     public function definition(): array
     {
         return [
-            'receiver_id' => User::factory(),
+            'receiver_account_id' => Account::factory(),
             'amount' => $this->faker->randomFloat(2, 100),
             'description' => $this->faker->text(200)
         ];

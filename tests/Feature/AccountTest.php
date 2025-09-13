@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class UserTest extends TestCase
+class AccountTest extends TestCase
 {
     public function testSuccessUserCreation(): void
     {
@@ -39,7 +39,7 @@ class UserTest extends TestCase
         );
     }
 
-    public function testListAllUsers(): void
+    public function testListAllAccounts(): void
     {
         $this->post('/api/user', [
             'document' => '48306792041',
@@ -57,8 +57,8 @@ class UserTest extends TestCase
 
         $response->assertOk();
 
-        $users = json_decode($response->getContent());
+        $accounts = json_decode($response->getContent());
 
-        $this->assertCount(2, $users);
+        $this->assertCount(2, $accounts);
     }
 }

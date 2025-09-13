@@ -13,8 +13,8 @@ class TransactionService extends TransactionValidations
         $this->validateTransfer(amount: $amount, receiverId: $receiverId);
 
         return Transfer::create([
-            'sender_id' => Auth::User()->id,
-            'receiver_id' => $receiverId,
+            'sender_account_id' => Auth::User()->id,
+            'receiver_account_id' => $receiverId,
             'amount' => $amount,
             'type' => $type->value,
             'description' => $description

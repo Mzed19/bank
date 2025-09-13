@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     protected $fillable = [
-        'user_id',
+        'account_id',
         'amount',
         'type',
         'imported_id'
     ];
 
-    public static function getUserBalance(int $userId): float
+    public static function getAccountBalance(int $accountId): float
     {
-        return self::where('user_id', $userId)->sum('amount');
+        return self::where('account_id', $accountId)->sum('amount');
     }
 }

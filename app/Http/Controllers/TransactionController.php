@@ -21,7 +21,7 @@ class TransactionController extends Controller
             $data = $request->validated();
 
             $depositCreated = Deposit::create([
-                'receiver_id' => $data['receiverId'],
+                'receiver_account_id' => $data['receiverId'],
                 'amount' => $data['amount'],
                 'description' => $data['description'] ?? null
             ]);

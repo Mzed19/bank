@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\AccountStoreRequest;
 use App\Http\Resources\LoginResource;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\AccountResource;
 use App\Models\Deposit;
-use App\Models\User;
+use App\Models\Account;
 use App\Services\Login\LoginService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends Controller
+class AccountController extends Controller
 {
     public function login(LoginRequest $request): JsonResponse
     {
@@ -32,21 +32,21 @@ class UserController extends Controller
         }
     }
 
-    public function create(UserStoreRequest $request): JsonResponse
+    public function create(AccountStoreRequest $request): JsonResponse
     {
         try{
             $data = $request->validated();
 
-            $userCreated = User::create($data);
+            $accountCreated = Account::create($data);
 
             Deposit::create([
-                'receiver_id' => $userCreated->id,
+                'receiver_account_id' => $accountCreated->id,
                 'amount' => $data['balance'],
                 'description' => 'Depósito inicial'
             ]);
 
             return $this->sendContent(
-                content: UserResource::make($userCreated),
+                content: AccountResource::make($accountCreated),
                 code: Response::HTTP_CREATED
             );
         }catch(Exception $e){
@@ -56,11 +56,11 @@ class UserController extends Controller
 
     public function all(): JsonResponse
     {
-        $users = User::all();
+        $accounts = Account::all();
 
         return $this->sendContent(
-            content: UserResource::collection($users),
-            code: $users->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK
+            content: AccountResource::collection($accounts),
+            code: $accounts->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK
         );
     }
 }

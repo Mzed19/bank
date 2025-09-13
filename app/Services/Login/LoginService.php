@@ -15,13 +15,13 @@ class LoginService
             throw new UnprocessableEntityHttpException('Credenciais inválidas.');
         }
 
-        $user = Auth::user();
+        $account = Auth::user();
 
         return [
             'token' => $token,
-            'user' => [
-                'id' => $user->id,
-                'document' => $user->document,
+            'account' => [
+                'id' => $account->id,
+                'document' => $account->document,
             ],
         ];
     }

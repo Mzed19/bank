@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class Account extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
@@ -55,6 +55,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function deposits(): HasMany
     {
-        return $this->hasMany(Deposit::class, 'receiver_id');
+        return $this->hasMany(Deposit::class, 'receiver_account_id');
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('account_id')->constrained();
             $table->decimal('amount', 15, 2);
             $table->enum('type', explode(",", TransactionTypeEnum::getValuesInString()))
                 ->comment(TransactionTypeEnum::getValuesInString());

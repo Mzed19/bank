@@ -12,7 +12,7 @@ class TransferStoreRequest extends FormRequest
     {
 
         return [
-            'receiverId' => ['required', 'integer', 'exists:users,id'],
+            'receiverId' => ['required', 'integer', 'exists:accounts,id'],
             'amount' => ['required', 'numeric', 'min:0.01'],
             'type' => ['required', 'string', Rule::in(TransferTypeEnum::cases())],
         ];

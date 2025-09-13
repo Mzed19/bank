@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['comment' => 'APIs without authorization'], function () {
-    Route::post('login', [UserController::class, "login"]);
+    Route::post('login', [AccountController::class, "login"]);
     Route::post('deposit', [TransactionController::class, "createDeposit"]);
-    Route::post('user', [UserController::class, "create"]);
+    Route::post('user', [AccountController::class, "create"]);
 });
 
 Route::middleware('auth:api')->group(function () {
@@ -17,7 +17,7 @@ Route::middleware('auth:api')->group(function () {
     });
 });
 
-Route::group(['comment' => 'APIs for admin users'], function () {
+Route::group(['comment' => 'APIs for admin accounts'], function () {
     Route::get('extracts', [TransactionController::class, "getExtracts"]);
-    Route::get('user', [UserController::class, "all"]);
+    Route::get('user', [AccountController::class, "all"]);
 });

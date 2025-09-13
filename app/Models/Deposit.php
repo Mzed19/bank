@@ -13,13 +13,13 @@ class Deposit extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'receiver_id',
+        'receiver_account_id',
         'amount',
         'description',
     ];
 
-     public function user(): BelongsTo
+     public function account(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'receiver_id');
+        return $this->belongsTo(Account::class, 'receiver_account_id');
     }
 }

@@ -6,7 +6,7 @@ use App\Helpers\PersonDocumentHelper;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
-class UserFactory extends Factory
+class AccountFactory extends Factory
 {
     public function definition(): array
     {

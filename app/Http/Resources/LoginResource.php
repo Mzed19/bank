@@ -11,9 +11,9 @@ class LoginResource extends JsonResource
     {
         return [
             'token' => $this['token'],
-            'user' => [
-                'id' => $this['user']['id'],
-                'document' => $this['user']['document'],
+            'account' => [
+                'id' => $this['account']['id'],
+                'document' => $this['account']['document'],
             ],
         ];
     }
