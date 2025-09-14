@@ -6,11 +6,14 @@ use App\Enums\TransferTypeEnum;
 use App\Http\Requests\DepositStoreRequest;
 use App\Http\Requests\TransferStoreRequest;
 use App\Http\Resources\DepositResource;
+use App\Http\Resources\TransactionResource;
 use App\Http\Resources\TransferResource;
 use App\Models\Deposit;
+use App\Models\Transaction;
 use App\Services\Transaction\TransactionService;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
@@ -54,5 +57,28 @@ class TransactionController extends Controller
         } catch (Exception $exception) {
             return $this->treatException($exception);
         }
+    }
+
+    public function loggedAccountTransactions(): JsonResponse
+    {
+        $loggedAccountTransactions = Transaction::where('account_id', Auth::user()->id)
+            ->orderByDesc('id')
+            ->paginate(15);
+
+        return $this->sendPaginated(
+            content: $loggedAccountTransactions->items(),
+            paginator: $loggedAccountTransactions
+        );
+    }
+
+    public function getAllAccountsTransactions(): JsonResponse
+    {
+        $transactions = Transaction::orderByDesc('id')
+            ->paginate(15);
+
+        return $this->sendPaginated(
+            content: $transactions->items(),
+            paginator: $transactions
+        );
     }
 }

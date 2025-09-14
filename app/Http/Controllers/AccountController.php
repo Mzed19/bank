@@ -54,7 +54,7 @@ class AccountController extends Controller
         }
     }
 
-    public function all(): JsonResponse
+    public function getAccounts(): JsonResponse
     {
         $accounts = Account::all();
 

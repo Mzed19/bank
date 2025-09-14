@@ -18,7 +18,8 @@ class TransactionTest extends TestCase
         parent::setUp();
 
         $this->accounts = Account::factory(2)->has(Deposit::factory(10))->create();
-        $this->headers = array_merge($this->headers, ['Authorization: Bearer: ' => $this->getToken()]);
+        $this->getToken();
+        $this->headers = array_merge($this->headers, ['Authorization: Bearer: ' => $this->firstAccountToken]);
     }
 
     private function getToken(): void
@@ -44,7 +45,7 @@ class TransactionTest extends TestCase
 
     public function testSuccessTransferCreation(): void
     {
-        $response = $this->post('/api/transactions/transfers', [
+        $response = $this->post('/api/accounts/transactions/transfers', [
             'receiverAccountId' => 2,
             'amount' => 1000.00,
             'type' => TransferTypeEnum::DEBIT->value
@@ -55,7 +56,7 @@ class TransactionTest extends TestCase
 
     public function testFailByAutoTransfer(): void
     {
-        $response = $this->post('/api/transactions/transfers', [
+        $response = $this->post('/api/accounts/transactions/transfers', [
             'receiverAccountId' => 1,
             'amount' => 10.00,
             'type' => TransferTypeEnum::DEBIT->value
@@ -71,7 +72,7 @@ class TransactionTest extends TestCase
 
     public function testFailByUnavailableAmount(): void
     {
-        $response = $this->post('/api/transactions/transfers', [
+        $response = $this->post('/api/accounts/transactions/transfers', [
             'receiverAccountId' => 2,
             'amount' => 9999999999999.00,
             'type' => TransferTypeEnum::DEBIT->value
@@ -83,5 +84,19 @@ class TransactionTest extends TestCase
             'Saldo insuficiente para realizar a transferência. Seu saldo disponível é ',
             $response->json('error')
         );
+    }
+
+    public function testLoggedAccountTransactions(): void
+    {
+        $response = $this->get('/api/accounts/transactions', $this->headers);
+
+        $this->assertCount(10, $response->json('content'));
+    }
+
+    public function testGetAllTransactions(): void
+    {
+        $response = $this->get('/api/transactions', $this->headers);
+
+        $this->assertCount(15, $response->json('content'));
     }
 }

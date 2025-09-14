@@ -4,20 +4,21 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['comment' => 'APIs without authorization'], function () {
-    Route::post('login', [AccountController::class, "login"]);
-    Route::post('deposits', [TransactionController::class, "createDeposit"]);
-    Route::post('accounts', [AccountController::class, "create"]);
-});
+// Public APIs (no auth)
+Route::post('login', [AccountController::class, 'login']);
+Route::post('deposits', [TransactionController::class, 'createDeposit']);
+Route::post('accounts', [AccountController::class, 'create']);
 
+// Authenticated user APIs
 Route::middleware('auth:api')->group(function () {
-    Route::group(['prefix' => 'transactions'], function () {
-        Route::post('transfers', [TransactionController::class, "createTransfer"]);
-        Route::get('extracts', [TransactionController::class, "getExtract"]);
+    Route::prefix('accounts/transactions')->group(function () {
+        Route::post('transfers', [TransactionController::class, 'createTransfer']);
+        Route::get('', [TransactionController::class, 'loggedAccountTransactions']);
     });
 });
 
-Route::group(['comment' => 'APIs for admin accounts'], function () {
-    Route::get('extracts', [TransactionController::class, "getExtracts"]);
-    Route::get('accounts', [AccountController::class, "all"]);
+// Admin APIs
+Route::middleware([])->group(function () {
+    Route::get('transactions', [TransactionController::class, 'getAllAccountsTransactions']);
+    Route::get('accounts', [AccountController::class, 'getAccounts']);
 });
