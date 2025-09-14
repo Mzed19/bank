@@ -21,7 +21,7 @@ class TransactionController extends Controller
             $data = $request->validated();
 
             $depositCreated = Deposit::create([
-                'receiver_account_id' => $data['receiverId'],
+                'receiver_account_id' => $data['receiverAccountId'],
                 'amount' => $data['amount'],
                 'description' => $data['description'] ?? null
             ]);
@@ -42,7 +42,7 @@ class TransactionController extends Controller
 
             $transferCreated = (new TransactionService)->transfer(
                 amount: $data['amount'],
-                receiverId: $data['receiverId'],
+                receiverId: $data['receiverAccountId'],
                 type: TransferTypeEnum::from($data['type']),
                 description: $data['description'] ?? null
             );

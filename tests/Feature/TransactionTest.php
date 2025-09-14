@@ -17,7 +17,7 @@ class TransactionTest extends TestCase
     {
         parent::setUp();
 
-        $this->accounts = Account::factory()->count(2)->has(Deposit::factory()->count(10))->create();
+        $this->accounts = Account::factory(2)->has(Deposit::factory(10))->create();
         $this->headers = array_merge($this->headers, ['Authorization: Bearer: ' => $this->getToken()]);
     }
 
@@ -33,8 +33,8 @@ class TransactionTest extends TestCase
 
     public function testSuccessDepositCreation(): void
     {
-        $response = $this->post('/api/deposit', [
-            'receiverId' => 1,
+        $response = $this->post('/api/deposits', [
+            'receiverAccountId' => 1,
             'document' => '48306792041',
             'amount' => 1000.00
         ], $this->headers);
@@ -44,8 +44,8 @@ class TransactionTest extends TestCase
 
     public function testSuccessTransferCreation(): void
     {
-        $response = $this->post('/api/transaction/transfer', [
-            'receiverId' => 2,
+        $response = $this->post('/api/transactions/transfers', [
+            'receiverAccountId' => 2,
             'amount' => 1000.00,
             'type' => TransferTypeEnum::DEBIT->value
         ], $this->headers);
@@ -55,8 +55,8 @@ class TransactionTest extends TestCase
 
     public function testFailByAutoTransfer(): void
     {
-        $response = $this->post('/api/transaction/transfer', [
-            'receiverId' => 1,
+        $response = $this->post('/api/transactions/transfers', [
+            'receiverAccountId' => 1,
             'amount' => 10.00,
             'type' => TransferTypeEnum::DEBIT->value
         ], $this->headers);
@@ -71,8 +71,8 @@ class TransactionTest extends TestCase
 
     public function testFailByUnavailableAmount(): void
     {
-        $response = $this->post('/api/transaction/transfer', [
-            'receiverId' => 2,
+        $response = $this->post('/api/transactions/transfers', [
+            'receiverAccountId' => 2,
             'amount' => 9999999999999.00,
             'type' => TransferTypeEnum::DEBIT->value
         ], $this->headers);
