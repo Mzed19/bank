@@ -56,11 +56,11 @@ class AccountController extends Controller
 
     public function getAccounts(): JsonResponse
     {
-        $accounts = Account::all();
+        $accounts = Account::orderByDesc('id')->paginate();
 
-        return $this->sendContent(
-            content: AccountResource::collection($accounts),
-            code: $accounts->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK
+        return $this->sendPaginated(
+            paginator: $accounts,
+            resource: AccountResource::class
         );
     }
 }

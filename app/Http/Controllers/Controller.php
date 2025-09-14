@@ -17,8 +17,14 @@ abstract class Controller
         return response()->json($content, $code);
     }
 
-    public function sendPaginated(array|JsonResource $content, Paginator|LengthAwarePaginator $paginator): JsonResponse
+    public function sendPaginated(Paginator|LengthAwarePaginator $paginator, $resource = null): JsonResponse
     {
+        $content = $paginator->items();
+
+        if(!is_null($resource)){
+            $content = $resource::collection($paginator->items());
+        }
+
         return response()->json([
             'content' => $content,
             'total' => $paginator->count(),

@@ -57,8 +57,6 @@ class AccountTest extends TestCase
 
         $response->assertOk();
 
-        $accounts = json_decode($response->getContent());
-
-        $this->assertCount(2, $accounts);
+        $this->assertCount(2, $response->json('content'));
     }
 }

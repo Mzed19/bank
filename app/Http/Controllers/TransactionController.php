@@ -66,8 +66,8 @@ class TransactionController extends Controller
             ->paginate(15);
 
         return $this->sendPaginated(
-            content: $loggedAccountTransactions->items(),
-            paginator: $loggedAccountTransactions
+            paginator: $loggedAccountTransactions,
+            resource: TransactionResource::class
         );
     }
 
@@ -77,8 +77,8 @@ class TransactionController extends Controller
             ->paginate(15);
 
         return $this->sendPaginated(
-            content: $transactions->items(),
-            paginator: $transactions
+            paginator: $transactions,
+            resource: TransactionResource::class
         );
     }
 }
