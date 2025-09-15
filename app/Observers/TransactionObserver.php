@@ -15,6 +15,8 @@ class TransactionObserver
 {
     public function created(Model $record): void
     {
+        Log::info("Transação: $record->receiver_account_id recebeu $record->amount");
+
         try {
             Transaction::create([
                 'account_id' => $record->receiver_account_id,
@@ -34,6 +36,8 @@ class TransactionObserver
 
         if (!is_null($record->sender_account_id)) {
             try {
+                Log::info("Transação: $record->sender_account_id enviou $record->amount");
+
                 Transaction::create([
                     'account_id' => $record->sender_account_id,
                     'amount' => -$record->amount,
