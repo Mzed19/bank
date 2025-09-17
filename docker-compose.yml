@@ -2,6 +2,7 @@ version: "3"
 
 services:
     app:
+        container_name: app-bank-core-v1
         build:
             context: .
             dockerfile: Dockerfile
@@ -12,6 +13,7 @@ services:
         networks:
             - laravel
     nginx:
+        container_name: nginx-bank-core-v1
         image: nginx:alpine
         restart: unless-stopped
         ports:
@@ -22,6 +24,7 @@ services:
         networks:
             - laravel
     db:
+        container_name: mysql-bank-core-v1
         image: mysql:8.0
         platform: linux/x86_64
         restart: unless-stopped
