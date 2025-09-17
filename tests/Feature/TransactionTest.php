@@ -37,27 +37,36 @@ class TransactionTest extends TestCase
         $response = $this->post('/api/deposits', [
             'receiverAccountId' => 1,
             'document' => '48306792041',
-            'amount' => 1000.00
+            'amount' => 1000.00,
+            'description' => 'Renda'
         ], $this->headers);
 
         $response->assertCreated();
+        $this->assertEquals(1000, $response->json('amount'));
+        $this->assertEquals('Renda', $response->json('description'));
     }
 
     public function testSuccessTransferCreation(): void
     {
+
         $response = $this->post('/api/accounts/transactions/transfers', [
             'receiverAccountId' => 2,
             'amount' => 1000.00,
-            'type' => TransferTypeEnum::DEBIT->value
+            'type' => TransferTypeEnum::DEBIT->value,
+            'description' => 'Smash Burguer'
         ], $this->headers);
 
         $response->assertCreated();
+        $this->assertEquals('Smash Burguer', $response->json('description'));
+        $this->assertEquals($this->accounts->first()['id'], $response->json('senderAccountId'));
+        $this->assertEquals(2, $response->json('receiverAccountId'));
+        $this->assertEquals(1000, $response->json('amount'));
     }
 
     public function testFailByAutoTransfer(): void
     {
         $response = $this->post('/api/accounts/transactions/transfers', [
-            'receiverAccountId' => 1,
+            'receiverAccountId' => $this->accounts->first()['id'],
             'amount' => 10.00,
             'type' => TransferTypeEnum::DEBIT->value
         ], $this->headers);
@@ -91,6 +100,12 @@ class TransactionTest extends TestCase
         $response = $this->get('/api/accounts/transactions', $this->headers);
 
         $this->assertCount(10, $response->json('content'));
+
+        foreach ($response->json('content') as $transaction) {
+            $this->assertEquals($this->accounts->first()['id'], $transaction['accountId']);
+            $this->assertNotNull($transaction['amount']);
+            $this->assertNotNull($transaction['type']);
+        }
     }
 
     public function testGetAllTransactions(): void
@@ -98,5 +113,11 @@ class TransactionTest extends TestCase
         $response = $this->get('/api/transactions', $this->headers);
 
         $this->assertCount(15, $response->json('content'));
+
+        foreach ($response->json('content') as $transaction) {
+            $this->assertNotNull($transaction['accountId']);
+            $this->assertNotNull($transaction['amount']);
+            $this->assertNotNull($transaction['type']);
+        }
     }
 }

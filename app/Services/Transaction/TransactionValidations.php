@@ -18,19 +18,19 @@ class TransactionValidations
     private function blockAutoTransfer(int $receiverId): void
     {
         if (Auth::User()->id === $receiverId) {
-            throw new UnprocessableEntityHttpException('Transferências para o próprio usuário não são permitidas.');
+            throw new UnprocessableEntityHttpException('Auto transfers are not allowed.');
         }
     }
 
     private function blockUnavailableAmount(float $amount): void
     {
-        $userBalance = Transaction::getAccountBalance(accountId: Auth::User()->id);
+        $accountBalance = Transaction::getAccountBalance(accountId: Auth::User()->id);
 
-        if ($amount > $userBalance) {
-            $userBalanceInCurrencyFormat = TransactionHelper::toCurrency($userBalance);
+        if ($amount > $accountBalance) {
+            $accountBalanceInCurrencyFormat = TransactionHelper::toCurrency($accountBalance);
 
             throw new UnprocessableEntityHttpException(
-                "Saldo insuficiente para realizar a transferência. Seu saldo disponível é $userBalanceInCurrencyFormat"
+                "Insuficient balance. Your balance is $accountBalanceInCurrencyFormat"
             );
         }
     }

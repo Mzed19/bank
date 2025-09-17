@@ -27,7 +27,7 @@ class TransactionObserver
         } catch (Exception $exception) {
             Log::critical("Não foi possível creditar um valor de $record->amount para o usuário $record->receiver_account_id");
             Log::critical($exception->getMessage());
-            $this->revertTransaction(
+            $this->revertRecordOnTable(
                 tableName: $record->getTable(),
                 recordId: $record->id
             );
@@ -45,7 +45,7 @@ class TransactionObserver
                     'imported_id' => $record->id
                 ]);
             } catch (Exception $exception) {
-                $this->revertTransaction(
+                $this->revertRecordOnTable(
                     tableName: $record->getTable(),
                     recordId: $record->id
                 );
@@ -57,7 +57,7 @@ class TransactionObserver
         }
     }
 
-    private function revertTransaction(string $tableName, int $recordId): void
+    private function revertRecordOnTable(string $tableName, int $recordId): void
     {
         try{
             DB::delete("delete $tableName where id = $recordId");
