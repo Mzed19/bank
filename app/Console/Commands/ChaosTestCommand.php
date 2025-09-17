@@ -12,7 +12,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ChaosTestCommand extends Command
 {
-    protected $signature   = 'app:chaos';
+    protected $signature   = 'simulate';
     protected $description = 'It will start many transactions simulated with stored users.';
 
     private Collection $accounts;
@@ -26,16 +26,14 @@ class ChaosTestCommand extends Command
             $account->id => JWTAuth::fromUser($account)
         ]);
 
-        $totalRequests = 100;
+        $totalRequests = 1000;
 
-        $responses = Http::pool(function (Pool $pool) use ($tokens, $transferTypes, $totalRequests) {
-            $reqs = [];
-
+        Http::pool(function (Pool $pool) use ($tokens, $transferTypes, $totalRequests) {
             for ($i = 0; $i < $totalRequests; $i++) {
                 $account = $this->getRandomAccount();
-                $token   = $tokens[$account->id]; // token já gerado
+                $token   = $tokens[$account->id];
 
-                $reqs[] = $pool
+                $pool
                     ->withHeaders([
                         'Accept'        => 'application/json',
                         'Authorization' => "Bearer $token",
@@ -46,17 +44,9 @@ class ChaosTestCommand extends Command
                         'type'              => $transferTypes[random_int(0, count($transferTypes) - 1)],
                     ]);
             }
-
-            return $reqs;
         });
 
-        foreach ($responses as $idx => $response) {
-            if ($response->failed()) {
-                $this->error("Falha na requisição #{$idx}: HTTP " . $response->status());
-            }
-        }
-
-        $this->info('Envio concluído!');
+        $this->info('Simulação completa, verifique o endpoint geral de transações.');
     }
 
     private function getRandomAccount(): Account

@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
 {
-    public function createDeposit(DepositStoreRequest $request): JsonResponse
+    public function deposit(DepositStoreRequest $request): JsonResponse
     {
         try {
             $data = $request->validated();
@@ -38,7 +38,7 @@ class TransactionController extends Controller
         }
     }
 
-    public function createTransfer(TransferStoreRequest $request): JsonResponse
+    public function transfer(TransferStoreRequest $request): JsonResponse
     {
         try {
             $data = $request->validated();
@@ -71,7 +71,7 @@ class TransactionController extends Controller
         );
     }
 
-    public function getAllAccountsTransactions(): JsonResponse
+    public function getAllTransactions(): JsonResponse
     {
         $transactions = Transaction::orderByDesc('id')
             ->paginate(15);

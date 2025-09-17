@@ -27,7 +27,7 @@ abstract class Controller
 
         return response()->json([
             'content' => $content,
-            'total' => $paginator->count(),
+            'total' => $paginator->total(),
             'currentPage' => $paginator->currentPage(),
             'previousPageUrl' => $paginator->previousPageUrl(),
             'nextPageUrl' => $paginator->nextPageUrl()
