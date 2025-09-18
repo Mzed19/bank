@@ -60,5 +60,5 @@ Abra um **issue** ou envie um **pull request** com melhorias ou correções.
 ---
 
 ## 💡 Informações e decisões técnicas
-- Utilizei o Observer TransactionObserver como uma abordagem ao Event-Sourcing, o saldo das contas são sempre calculadas a partir destes eventos.
+- Utilizei o Observer TransactionObserver como uma abordagem ao Event-Sourcing, servindo para calcular o saldo da conta e visualização de extrato.
 - A model Account é uma classe para polimorfismo, caso houvessem mais duas tabelas como PhysicalInformation e JuridicalInformation, elas seriam derivadas ou dependentes da classe Account.
