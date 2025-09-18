@@ -24,4 +24,14 @@ abstract class TestCase extends BaseTestCase
         Artisan::call('key:generate');
         Artisan::call('migrate');
     }
+
+    public function getJWTToken(string $document, string $password): string
+    {
+        $response = $this->post('/api/login', [
+            'document' => $document,
+            'password' => $password
+        ], $this->headers);
+
+        return $response->json('token');
+    }
 }

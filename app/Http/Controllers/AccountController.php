@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\AccountStoreRequest;
+use App\Http\Resources\LoggedAccountInformationsResource;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\AccountResource;
 use App\Models\Deposit;
 use App\Models\Account;
+use App\Services\Account\AccountService;
 use App\Services\Login\LoginService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -24,8 +26,7 @@ class AccountController extends Controller
             );
 
             return $this->sendContent(
-                content: LoginResource::make($authentication),
-                code: Response::HTTP_OK
+                content: LoginResource::make($authentication)
             );
         }catch(Exception $e){
             return $this->treatException($e);
@@ -49,8 +50,8 @@ class AccountController extends Controller
                 content: AccountResource::make($accountCreated),
                 code: Response::HTTP_CREATED
             );
-        }catch(Exception $e){
-            return $this->treatException($e);
+        }catch(Exception $exception){
+            return $this->treatException($exception);
         }
     }
 
@@ -62,5 +63,18 @@ class AccountController extends Controller
             paginator: $accounts,
             resource: AccountResource::class
         );
+    }
+
+    public function me(): JsonResponse
+    {
+        try{
+            $loggedAccountInformations = (new AccountService)->me();
+
+            return $this->sendContent(
+                content: LoggedAccountInformationsResource::make($loggedAccountInformations)
+            );
+        }catch(Exception $exception){
+            return $this->treatException($exception);
+        }
     }
 }

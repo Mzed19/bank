@@ -11,9 +11,13 @@ Route::post('accounts', [AccountController::class, 'create']);
 
 // Authenticated user APIs
 Route::middleware('auth:api')->group(function () {
-    Route::prefix('accounts/transactions')->group(function () {
-        Route::post('transfers', [TransactionController::class, 'transfer']);
-        Route::get('', [TransactionController::class, 'loggedAccountTransactions']);
+    Route::prefix('accounts')->group(function (): void {
+        Route::get('me', [AccountController::class, 'me']);
+
+        Route::prefix('transactions')->group(function () {
+            Route::post('transfers', [TransactionController::class, 'transfer']);
+            Route::get('', [TransactionController::class, 'loggedAccountTransactions']);
+        });
     });
 });
 

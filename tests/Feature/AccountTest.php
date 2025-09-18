@@ -66,4 +66,29 @@ class AccountTest extends TestCase
         $this->assertEquals(2, $secondResponse->json('id'));
         $this->assertEquals('83684171042', $secondResponse->json('document'));
     }
+
+    public function testMeAccount(): void
+    {
+        $this->post('/api/accounts', [
+            'document' => '48306792041',
+            'password' => 'password123',
+            'balance' => 1000.00
+        ]);
+
+        $headers = array_merge(
+            $this->headers,
+            ['Bearer ' . $this->getJWTToken(
+                document: '48306792041',
+                password: 'password123'
+            )]
+        );
+
+        $response = $this->get('/api/accounts/me', $headers);
+
+        $response->assertOk();
+        $this->assertEquals(1, $response->json('accountId'));
+        $this->assertEquals('48306792041', $response->json('document'));
+        $this->assertEquals(1000, $response->json('balance'));
+        $this->assertEquals('R$ 1.000,00', $response->json('balanceFormatted'));
+    }
 }

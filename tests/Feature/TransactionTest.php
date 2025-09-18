@@ -18,18 +18,11 @@ class TransactionTest extends TestCase
         parent::setUp();
 
         $this->accounts = Account::factory(2)->has(Deposit::factory(10))->create();
-        $this->getToken();
+        $this->firstAccountToken = $this->getJWTToken(
+            document: Account::orderBy('id')->first()->document,
+            password: 'password'
+        );
         $this->headers = array_merge($this->headers, ['Authorization: Bearer: ' => $this->firstAccountToken]);
-    }
-
-    private function getToken(): void
-    {
-        $response = $this->post('/api/login', [
-            'document' => $this->accounts->first()['document'],
-            'password' => 'password'
-        ], $this->headers);
-
-        $this->firstAccountToken = $response->json('token');
     }
 
     public function testSuccessDepositCreation(): void
@@ -74,7 +67,7 @@ class TransactionTest extends TestCase
         $response->assertUnprocessable();
 
         $this->assertEquals(
-            'Transferências para o próprio usuário não são permitidas.',
+            'Auto transfers are not allowed.',
             $response->json('error')
         );
     }
@@ -90,7 +83,7 @@ class TransactionTest extends TestCase
         $response->assertUnprocessable();
 
         $this->assertStringContainsString(
-            'Saldo insuficiente para realizar a transferência. Seu saldo disponível é ',
+            'Insuficient balance. Your balance is ',
             $response->json('error')
         );
     }
