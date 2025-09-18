@@ -1,7 +1,7 @@
 # Bank Core
 
 Aplicação backend para gerenciamento de contas bancárias, depósitos e transferências.  
-O projeto expõe uma API RESTful que permite criar contas, realizar depósitos, transferências e consultar informações da conta logada.
+O projeto expõe API's que permitem criar contas, realizar depósitos, transferências e consultar informações da conta logada.
 
 ---
 
