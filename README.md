@@ -52,30 +52,9 @@ Caso algo dê errado, basta seguir manualmente os comandos contidos no arquivo *
 
 ---
 
-## ▶️ Como Rodar Localmente
-
-1. Clone este repositório:  
-   ```bash
-   git clone https://github.com/seu-usuario/bank-core.git
-   cd bank-core
-   ```
-
-2. Execute o script de inicialização:  
-   ```bash
-   bash initial-up.sh
-   ```
-
-3. Acesse a API em: `http://localhost:8080` (ou a porta configurada no seu ambiente).
-
----
-
 ## 🧑‍💻 Contribuição
 
 Contribuições são bem-vindas!  
 Abra um **issue** ou envie um **pull request** com melhorias ou correções.
 
 ---
-
-## 📄 Licença
-
-Distribuído sob a licença MIT. Consulte o arquivo `LICENSE` para mais detalhes.
