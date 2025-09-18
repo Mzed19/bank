@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 services:
     app:
@@ -12,6 +12,10 @@ services:
             - ./:/var/www
         networks:
             - laravel
+        depends_on:
+            db:
+                condition: service_healthy
+
     nginx:
         container_name: nginx-bank-core-v1
         image: nginx:alpine
@@ -23,6 +27,10 @@ services:
             - ./docker/nginx/:/etc/nginx/conf.d/
         networks:
             - laravel
+        depends_on:
+            app:
+                condition: service_started
+
     db:
         container_name: mysql-bank-core-v1
         image: mysql:8.0
@@ -39,6 +47,12 @@ services:
             - "3300:3306"
         networks:
             - laravel
+        healthcheck:
+            test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot || exit 1"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 20s
 
 networks:
     laravel:
