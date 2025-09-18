@@ -38,7 +38,7 @@ class ChaosTestCommand extends Command
                         'Accept'        => 'application/json',
                         'Authorization' => "Bearer $token",
                     ])
-                    ->post('http://192.168.18.13:8000/api/accounts/transactions/transfers', [
+                    ->post(url('/api/accounts/transactions/transfers'), [
                         'receiverAccountId' => $this->getRandomAccount()->id,
                         'amount'            => random_int(0, 1000),
                         'type'              => $transferTypes[random_int(0, count($transferTypes) - 1)],
