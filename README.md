@@ -1,52 +1,60 @@
+# Bank Core
 
-# Setup Docker Laravel 11 com PHP 8.3
-[Assine a Academy, e Seja VIP!](https://academy.especializati.com.br)
+Aplicação backend para gerenciamento de contas bancárias, depósitos e transferências.  
+O projeto expõe API's que permitem criar contas, realizar depósitos, transferências e consultar informações da conta logada.
 
-### Passo a passo
-Clone Repositório
-```sh
-git clone -b laravel-11-with-php-8.3 https://github.com/especializati/setup-docker-laravel.git app-laravel
-```
-```sh
-cd app-laravel
-```
+---
 
-Suba os containers do projeto
-```sh
-docker-compose up -d
+## 🚀 Deploy
+
+Para iniciar o projeto pela primeira vez:
+
+```bash
+bash initial-up.sh
 ```
 
+Caso algo dê errado, basta seguir manualmente os comandos contidos no arquivo **`initial-up.sh`**.
 
-Crie o Arquivo .env
-```sh
-cp .env.example .env
-```
+---
 
-Acesse o container app
-```sh
-docker-compose exec app bash
-```
+## 🧭 Tour
 
+- Foram inseridas **10 contas** de teste, **todas com a senha `password`**.  
+- É possível criar novas contas através do endpoint **`/accounts`**.  
+- Mais informações e exemplos de requisição estão disponíveis na **Collection Postman** incluída no repositório.
 
-Instale as dependências do projeto
-```sh
-composer install
-```
+---
 
-Gere a key do projeto Laravel
-```sh
-php artisan key:generate
-```
+## 📡 Endpoints Principais
 
-OPCIONAL: Gere o banco SQLite (caso não use o banco MySQL)
-```sh
-touch database/database.sqlite
-```
+| Endpoint        | Método | Descrição                                                   |
+|-----------------|-------|-------------------------------------------------------------|
+| **`/accounts/me`** | GET   | Retorna as informações da conta autenticada.               |
+| **`/accounts`**    | POST  | Cria uma nova conta.                                       |
+| **`/deposits`**    | POST  | Injeta dinheiro no saldo da conta (depósito).              |
+| **`/transfer`**    | POST  | Transfere dinheiro entre contas existentes.                |
 
-Rodar as migrations
-```sh
-php artisan migrate
-```
+---
 
-Acesse o projeto
-[http://localhost:8000](http://localhost:8000)
+## 🛠️ Tecnologias
+
+- **PHP/Laravel**  
+- **Docker**  
+- **MySQL**  
+- **Nginx**
+
+---
+
+## 📋 Requisitos
+
+- **Docker** e **Docker Compose** instalados  
+- **Git** para clonar o repositório
+
+---
+
+## 🧑‍💻 Contribuição
+
+Contribuições são bem-vindas!  
+Abra um **issue** ou envie um **pull request** com melhorias ou correções.
+
+---
